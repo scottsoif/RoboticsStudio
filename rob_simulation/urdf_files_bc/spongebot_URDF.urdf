@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<robot name="spongebot">
+  <link name="left_leg">
+    <visual>
+      <geometry>
+        <mesh filename="Left Spongebob Leg_fine.stl"/>
+      </geometry>
+      <material name="PLA">
+        <color rgba="1.0 0 1.0 1.0"/>
+      <material>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="Left Spongebob Leg_coarse.stl"/>
+      </geometry>
+    <inertial>
+      <mass value="0.36"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+  </link>
+
+  <link name="right_leg">
+    <visual>
+      <geometry>
+        <mesh filename="Right Spongebob Leg_fine.stl"/>
+      </geometry>
+      <material name="PLA">
+        <color rgba="0 1.0 1.0 1.0"/>
+      <material>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="Right Spongebob Leg_coarse.stl"/>
+      </geometry>
+    <inertial>
+      <mass value="0.36"/>
+      <inertia ixx="0.03" ixy="0.01" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.03"/>
+    </inertial>
+  </link>
+
+  <link name="left_arm">
+    <visual>
+      <geometry>
+        <mesh filename="Left Arm Spongebob_fine.stl"/>
+      </geometry>
+      <material name="PLA">
+        <color rgba="1.0 1.0 0 1.0"/>
+      <material>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="Left Arm Spongebob_coarse.stl"/>
+      </geometry>
+    <inertial>
+      <mass value="0.13"/>
+      <inertia inertia ixx="0.03" ixy="0.01" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.03"/>
+    </inertial>
+  </link>
+
+  <link name="right_arm">
+    <visual>
+      <geometry>
+        <mesh filename="Right Arm Spongebob_fine.stl"/>
+      </geometry>
+      <material name="PLA">
+        <color rgba="1.0 1.0 1.0 0"/>
+      <material>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="Right Arm Spongebob_coarse.stl"/>
+      </geometry>
+    <inertial>
+      <mass value="0.13"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0"/>
+    </inertial>
+  </link>
+
+  <link name="torso">
+    <visual>
+      <geometry>
+        <mesh filename="Torso Assembly_fine.stl"/>
+      </geometry>
+      <material name="PLA">
+        <color rgba="1.0 1.0 1.0 1.0"/>
+      <material>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="Torso Assembly_coarse.stl"/>
+      </geometry>
+    <inertial>
+      <mass value="0.88"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy=".01" iyz="0.0" izz="0.01"/>
+    </inertial>
+  </link>
+
+  <joint name="left_leg_torso" type="revolute">
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="0.0" upper="0.548" velocity="0.5"/>
+    <origin rpy="0 0 0" xyz="0.2 0.01 0"/>
+    <parent link="torso"/>
+    <child link="left_leg"/>
+  </joint>
+
+  <joint name="right_leg_torso" type="revolute">
+    <axis xyz="0 0 -1"/>
+    <limit effort="1000.0" lower="0.0" upper="0.548" velocity="0.5"/>
+    <origin rpy="0 0 0" xyz="0.2 -0.01 0"/>
+    <parent link="torso"/>
+    <child link="right_leg"/>
+  </joint>
+
+  <joint name="left_arm_torso" type="revolute">
+    <axis xyz="0 0 -1"/>
+    <limit effort="1000.0" lower="0.0" upper="0.548" velocity="0.5"/>
+    <origin rpy="0 0 0" xyz="0.2 -0.01 0"/>
+    <parent link="torso"/>
+    <child link="left_arm"/>
+  </joint>
+
+  <joint name="right_arm_torso" type="revolute">
+    <axis xyz="0 0 -1"/>
+    <limit effort="1000.0" lower="0.0" upper="0.548" velocity="0.5"/>
+    <origin rpy="0 0 0" xyz="0.2 -0.01 0"/>
+    <parent link="torso"/>
+    <child link="right_arm"/>
+  </joint>
+</robot>

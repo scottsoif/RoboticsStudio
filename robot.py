@@ -21,17 +21,18 @@ servo23 = LX16A(23)
 servo24 = LX16A(24)
 
 joints = [11, 12, 13, 14, 21, 22, 24, 23] # ordered list of servo names
-offsets = {11:120, 12:105, 13:132, 14:133, 21:123, 22:101, 23:108, 24:116}
+offsets = {11:120, 12:105, 13:132, 14:133, 21:123, 22:101, 23:108, 24:115}
 servos = {11:servo11, 12:servo12, 13:servo13, 14:servo14, 21:servo21, 22:servo22, 23:servo23, 24:servo24}
 # servo_list =  [servos[joint] for j in joints] # ordered list of servo motors
 
 def error_lights():
 	# flash RED then remain red
 	for i in range(5):
-		pixels.fill((100, 0, 0))
+		pixels.fill((50, 0, 0))
 		time.sleep(.2)
 		pixels.fill((0, 0, 0))
-	pixels.fill((100, 0, 0))
+		time.sleep(.2)
+	pixels.fill((50, 0, 0))
 
 	# TODO: done? print("Red lights once neopixel setup")
 
@@ -40,6 +41,15 @@ def kill_motors():
 	for servo in servos.values():
 		servo.loadOrUnloadWrite(0)
 
+def shut_down():
+	# homes and disables all motors
+	home_all(.1)
+
+	# move_servos([-2, 99, -94, -60, -3, -84, 75, 97],.05)
+	time.sleep(1.5)
+	kill_motors()
+	pixels.fill((10,20,20))
+
 def engage_motors():
 	for servo in servos.values():
 		servo.loadOrUnloadWrite(1)
@@ -47,7 +57,7 @@ def engage_motors():
 def getKeySet(num_positions=1):
 	
 	pos_list = []
-	home_all()
+	# home_all()
 	time.sleep(2)
 
 	pixels.fill((0, 50, 50))
@@ -118,12 +128,13 @@ def boot_test():
 
 boot_test()
 
-def home_all(step_size=.3, fp=None,  start_time=None):
+def home_all(step_size=.3, fp=None,  start_time=None, arms=60):
 	
 	pixels.fill((30, 0, 30))
 	# for servo_num, servo in servos.items():
 	# 	move_servo(servo, 0, offsets[servo_num], .06)
-	x = [0, 0,0 ,-60 ,0 ,0 ,0, 60]
+
+	x = [0, 0,0 ,-1*int(arms) ,0 ,0 ,0, int(arms)]
 	move_servos(x, step_size, fp, start_time)
 
 
@@ -156,11 +167,11 @@ def walk(speed_t=0.02):
 
 	for i in range(5):
 		keysets = [
-					[ -2,    0,    0,  -60,    -2,    0,    0,  60],
+				   [ -2,    0,    0,  -60,    -2,    0,    0,  60],
 				   [ 20,  -3,   -3,  -60,  -15,    0,   20,  60],
 				   [ 20,   10,   -6,  -60,  -15,  -20,   10,  60],
 				   [ 0,    10,   -12,  -60,    5,  -20,   15,  60],
-				   
+	
 				   [ -15,    0,   10,  -60,    20,  -5,   5,  60],
 				 
 				 # other  leg
@@ -169,7 +180,6 @@ def walk(speed_t=0.02):
 				   [ -15,  -20,   10,  -60,  20,   10,   -6,  60],
 				   [ 5,  -20,   10,  -60,    0,    10,   -12,  60],
 				   [ 20,  -10,   5,  -60,    -15,    7,   5,  60],
-
 		]
 
 	
@@ -191,6 +201,209 @@ def walk(speed_t=0.02):
 		
 	# close file
 	fp.close()
+
+def dance_step_1(speed_t=.009):
+
+	# make sure to home robot before this
+	pixels.fill((00, 30, 20))
+	tilt_right_key_1 =  [ 20,  -2,   -3,  -0,  -15,    0,   20,  0]
+	tilt_right_key_2 =  [ 30,  -2,   -3,  -0,  -15,    0,   20,  0]
+
+	move_servos(tilt_right_key_1, .1)
+	time.sleep(.1)
+	move_servos(tilt_right_key_2, .1)
+	time.sleep(.4)
+	t = 0
+	start_time = time.time()
+
+	while True :
+		servo22.moveTimeWrite(offsets[22]-sin(t)*30)
+		servo14.moveTimeWrite(offsets[14]-sin(t)*25)
+		servo23.moveTimeWrite(offsets[23]+sin(t)*25)
+
+		if time.time()-start_time > 5:
+			break
+		t += speed_t
+
+	home_all(.1)
+
+def dance_step_2():
+
+	pixels.fill((00, 30, 20))
+	t = 0
+	start_time = time.time()
+	speed_t = .006
+	while True :
+		servo11.moveTimeWrite(offsets[11]+sin(t)*10)
+		servo21.moveTimeWrite(offsets[21]-sin(t-.04)*20)
+
+
+		if time.time()-start_time > 6:
+			break
+		t += speed_t
+	
+	home_all(.1)
+	t = 0
+	start_time = time.time()
+	speed_t = .006
+	while True :
+		servo11.moveTimeWrite(offsets[11]-sin(t)*20)
+		servo21.moveTimeWrite(offsets[21]+sin(t+.02)*10)
+		if time.time()-start_time > 6:
+			break
+		t += speed_t
+
+	home_all(.1)
+
+
+
+
+def dance_step_3():
+
+	home_all(.1)
+	time.sleep(.1)
+	pixels.fill((00, 30, 20))
+	x = [0, 0,0 ,30 ,0 ,0 ,0, -30]
+	move_servos(x, .25)
+
+	start_time = time.time()
+	speed_t = .006
+	t = 0
+	while True:
+		servo23.moveTimeWrite(offsets[23]-30-sin(t)*25)
+		if time.time()-start_time > 2:
+			break
+		t += speed_t
+
+	start_time = time.time()
+	speed_t = .0045
+	while True:
+		servo14.moveTimeWrite(offsets[14]+30-sin(t)*25)
+		if time.time()-start_time > 2:
+			break
+		t += speed_t
+
+	# home_all(.1)
+
+def dance_step_4():
+
+	home_all(.2, arms=30)
+	time.sleep(.1)
+	pixels.fill((00, 30, 20))
+
+	t = 0
+	speed_t = .01
+	start_time = time.time()
+	while True :
+		servo11.moveTimeWrite(offsets[11]-sin(t)*20)
+		servo21.moveTimeWrite(offsets[21]+sin(t)*20)
+		servo14.moveTimeWrite(offsets[14]+20+sin(t)*40)
+		servo23.moveTimeWrite(offsets[23]+20+sin(t)*40)
+		if time.time()-start_time > 6:
+			break
+		t += speed_t
+
+def dance_step_5(speed_t=.011):
+
+	# make sure to home robot before this
+	home_all(.2, arms=0)
+	pixels.fill((00, 30, 20))
+	tilt_right_key_1 =  [ 20,  -2,   -3,  -0,  -15,    0,   20,  0]
+	tilt_right_key_2 =  [ 30,  -2,   -3,  -0,  -15,    0,   5,  0]
+
+	move_servos(tilt_right_key_1, .1)
+	time.sleep(.1)
+	move_servos(tilt_right_key_2, .1)
+	time.sleep(.4)
+	t = 0
+	start_time = time.time()
+
+	while True :
+		servo22.moveTimeWrite(offsets[22]-sin(t)*30)
+		servo14.moveTimeWrite(offsets[14]-sin(t)*25)
+		# servo23.moveTimeWrite(offsets[23]+sin(t)*25)
+		servo21.moveTimeWrite(offsets[21]-cos(t+.1)*25)
+
+		if time.time()-start_time > 5:
+			break
+		t += speed_t
+
+	home_all(.1)
+
+def dance_step_6(speed_t=.008):
+
+	pixels.fill((00, 30, 20))
+	tilt_forward_key =  [ 0, -6, 0, -60,  0,  -6, 0, 60]
+
+	move_servos(tilt_forward_key, .1)
+	time.sleep(.1)
+	t = 0
+	start_time = time.time()
+
+	while True :
+
+		servo22.moveTimeWrite(offsets[22]-6+cos(t)*20)
+		servo12.moveTimeWrite(offsets[12]-6-cos(t)*20)
+		servo24.moveTimeWrite(offsets[24]-cos(t)*20)
+		servo13.moveTimeWrite(offsets[13]+cos(t)*20)
+
+
+		if time.time()-start_time > 5:
+			break
+		t += speed_t
+
+	home_all(.1, arms=-60)
+
+
+def dance_step_bow(speed_t=.008):
+
+	pixels.fill((00, 30, 20))
+
+	# move_servos([ 0, 0, 0, 50, 0, 0, 0, -50], .2)
+
+	t = 0
+	start_time = time.time()
+	
+	keysets = [
+
+				[ 0, -20, 9, 60, 0, -20, 9, -60],
+				[ 0, -40, 20, 60, 0, -40, 20, -60],
+				[ 0, -30, 20, 60, 0, -30, 20, -60], 
+				[ 0, -25, 15, 60, 0, -25, 15, -60], 
+				[ 0, -15, 15, 60, 0, -15, 15, -60], 
+
+	]
+
+	for i in range(len(keysets)):
+		print(keysets[i])
+		move_servos(keysets[i], .05)
+		time.sleep(.05)
+
+		# move_servos([ 0, 0, 0,  -60, 0, 0,  0,  60], .125)
+	time.sleep(.2)
+	home_all(.1)
+
+	
+def dance(rythm=1, speed_t=0.01):
+	pixels.fill((00, 10, 10))
+	
+	home_all(.1, arms=60)
+	time.sleep(1)
+	pixels.fill((00, 10, 00))
+	time.sleep(.1)
+	pixels.fill((00, 30, 20))
+
+	for i in range(2):
+		dance_step_1()
+		dance_step_2()
+		dance_step_3()
+		dance_step_4()
+		dance_step_5()
+		dance_step_6()
+		
+	time.sleep(.1)
+	dance_step_bow()
+
 
 def flap(speed_t):
 	t = 0
@@ -275,6 +488,8 @@ def main():
 
 	parser.add_argument('--home', action="store_true", help="Home everything to upright pos")
 	parser.add_argument('--walk', action="store_true", help="Walk (default forward)")
+	parser.add_argument('--dance', action="store_true", help="Dance (default move 1)")
+
 	parser.add_argument('--flap', action="store_true", help="Flap Arms in sync")
 	parser.add_argument('--m_flap', action="store_true", help="Walk and Flap Arms in sync")
 
@@ -282,16 +497,18 @@ def main():
 
 	parser.add_argument('--motor_stop', action="store_true", help="Shut Down all motors")
 	parser.add_argument('--motor_start', action="store_true", help="Engage all motors")
-	parser.add_argument('--find_keysets', action="store_true", help="Find keysets angles for walking")
-
+	parser.add_argument('--shut_down', action="store_true", help="Shut Down Robot Sequence")
+	parser.add_argument('--find_keysets', action="store_true", help="find_keysets")
 
 	args = parser.parse_args()
 	print(args)
 
 	if args.home:
-		home_all(.3)
+		home_all(.2)
 	elif args.walk:
 		walk(.1)
+	elif args.dance:
+		dance()
 	elif args.flap:
 		flap(.01)
 	elif args.m_flap:
@@ -302,6 +519,8 @@ def main():
 		 kill_motors()
 	elif args.motor_start:
 		 engage_motors()
+	elif args.shut_down:
+		 shut_down()
 
 	elif args.find_keysets:
 		print(getKeySet(7))

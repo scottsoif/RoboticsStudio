@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-1-g15f4949  Build Version: 1.6.7594.29634
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="Full Assembly-URDF">
+
+  <link
+    name="right_hip">
+    <inertial>
+      <origin
+        xyz="5.89880228760165E-08 0.0147488214528889 -1.38906417962437E-06"
+        rpy="0 0 0" />
+      <mass
+        value="0.0182000436759869" />
+      <inertia
+        ixx="4.61904406920877E-06"
+        ixy="4.23491446567004E-12"
+        ixz="-1.15262221478406E-11"
+        iyy="4.55422288580642E-06"
+        iyz="-1.65318141470171E-10"
+        izz="4.61892006209933E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh 
+          filename="right_hip.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.470588235294118 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh 
+          filename="right_hip.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link
+    name="right_knee">
+    <inertial>
+      <origin
+        xyz="-0.0076676655762186 0.00937445475058557 0.0145404768463093"
+        rpy="0 0 0" />
+      <mass
+        value="0.0689610903743217" />
+      <inertia
+        ixx="1.80423657037947E-05"
+        ixy="-2.5485342900053E-10"
+        ixz="-6.65487531910597E-07"
+        iyy="4.29022773445102E-05"
+        iyz="1.62012840320285E-10"
+        izz="3.4277539831804E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh 
+          filename="right_knee.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh 
+          filename="right_knee.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_knee_j"
+    type="revolute">
+    <origin
+      xyz="0.077212 -0.25495 -0.095608"
+      rpy="2.7529 -1.39 -2.7471" />
+    <parent
+      link="right_hip" />
+    <child
+      link="right_knee" />
+    <axis
+      xyz="-1 0 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="right_ankle">
+    <inertial>
+      <origin
+        xyz="-0.00996695197317302 0.00131996347074376 0.0143385541430397"
+        rpy="0 0 0" />
+      <mass
+        value="0.179936209358496" />
+      <inertia
+        ixx="0.000133009412255369"
+        ixy="-1.20873987872488E-06"
+        ixz="4.92993213183271E-09"
+        iyy="5.41378086386477E-05"
+        iyz="2.02257286003695E-09"
+        izz="0.000114596286353538" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh 
+          filename="right_ankle.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh 
+          filename="right_ankle.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_ankle_j"
+    type="revolute">
+    <origin
+      xyz="0 -0 -0.21219"
+      rpy="2.2673 -1.3084 -2.2502" />
+    <parent
+      link="right_knee" />
+    <child
+      link="right_ankle" />
+    <axis
+      xyz="-1 0 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+        </joint>
+
+</robot>

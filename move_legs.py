@@ -15,6 +15,12 @@ servo23 = LX16A(23)
 offsets = {11:120, 12:105, 13:132, 21:120, 22:100, 23:110}
 servos = {11:servo11, 12:servo12, 13:servo13, 21:servo21, 22:servo22, 23:servo23}
 t=0
+
+def home_all():
+
+    for joint in servos:
+        servos[joint].moveTimeWrite(offsets[joint])
+
 while True:
                 angles = input("Enter servo,angle:\n")
                 servo, angle = [int(i) for i in angles.split(',')]
