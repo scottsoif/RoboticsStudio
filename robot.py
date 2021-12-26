@@ -144,63 +144,116 @@ def walk(speed_t=0.02):
 	
 	fp = open('joint_angles.txt', 'w')
 	start_time = time.time()
-	# home_all()
-	# time.sleep(3)
-#	while True:
-#		# Two sine waves out of phase
-#		#servo11.moveTimeWrite(120+sin(t)*10)
-#		servo12.moveTimeWrite(105+sin(t)*15)
-#		servo13.moveTimeWrite(134+sin(t-1)*10)
-#		#servo21.moveTimeWrite(120+sin(t)*10)
-#		servo22.moveTimeWrite(100-sin(t)*15)
-#		servo23.moveTimeWrite(110-sin(t-1)*10)
-#
-#		# servo2.moveTimeWrite(120+cos(t)*50)
-#		t += speed_t
-	home_all(.1, fp, start_time)
+
+	# home_all(.1, fp, start_time)
+	move_servos([-1, 0, -1, -60, -2, 0, -1, 60], .1, fp, start_time)
 	time.sleep(1)
 	pixels.fill((00, 10, 00))
 	time.sleep(.1)
 	pixels.fill((00, 30, 20))
-
-
-
-	for i in range(5):
-		keysets = [
-				   [ -2,    0,    0,  -60,    -2,    0,    0,  60],
-				   [ 20,  -3,   -3,  -60,  -15,    0,   20,  60],
-				   [ 20,   10,   -6,  -60,  -15,  -20,   10,  60],
-				   [ 0,    10,   -12,  -60,    5,  -20,   15,  60],
-	
-				   [ -15,    0,   10,  -60,    20,  -5,   5,  60],
+				# gate v1
+				# 	[ -2,    0,    0,  -60,    -2,    0,    0,  60],
+				#    [ 20,  -3,   -3,  -60,  -15,    0,   20,  60],
+				#    [ 20,   10,   -6,  -60,  -15,  -20,   10,  60],
+				#    [ 0,    10,   -12,  -60,    5,  -20,   15,  60],
+				   
+				#    [ -15,    0,   10,  -60,    20,  -5,   5,  60],
 				 
-				 # other  leg
+				#  # other  leg
+				#    [ 0,    0,    0,  -60,    0,    0,    0,  60],
+				#    [ -15,    0,   20,  -60,  20,  -3,   -3,  60],
+				#    [ -15,  -20,   10,  -60,  20,   10,   -6,  60],
+				#    [ 5,  -20,   10,  -60,    0,    10,   -12,  60],
+				#    [ 20,  -10,   5,  -60,    -15,    7,   5,  60],
+
+
+	for i in range(6):
+		keysets = [
+				#    [ 20,   -3,   -4,  -55,   -15,    0,   20,  60],
+				#    [ 20,   10,   -8,  -50,   -15,  -19,   10,  60],
+				#    [ 0,    8,  -13,  -55,     5,  -19,   15,  60],
+				   
+				#  # other  leg
+				#    [ -2,     0,    -1,  -60,    -2,     0,    -1,  60],
+				#    [ -25,   0,   20,  -60,   17,    -3,   -3,  55],
+				#    [ -15, -18,    8,  -60,   17,    13,   -6,  50],
+				#    [ 5,   -18,   10,  -60,    0,    10,   -13,  55],
+				#    [ -2,    0,    -2,  -60,    -2,    0,    -2,  60],
+
+
+				# gate v1
+					[ -2,    0,    0,  -60,    -2,    0,    0,  60],
+				   [ 20,  -3,   -3,  -60,  -15,    0,   20,  60],
+				   [ 20,   10,   -7,  -60,  -15,  -20,   15,  60],
+				   [ 0,    10,   -12,  -60,    5,  -20,   15,  60],
+				   
+				   [ 0,    0,   -10,  -60,    0,  -5,   5,  60],
+				 
+				#  # other  leg
 				   [ 0,    0,    0,  -60,    0,    0,    0,  60],
 				   [ -15,    0,   20,  -60,  20,  -3,   -3,  60],
-				   [ -15,  -20,   10,  -60,  20,   10,   -6,  60],
-				   [ 5,  -20,   10,  -60,    0,    10,   -12,  60],
+				   [ -15,  -15,   10,  -60,  20,   10,   -6,  60],
+				   [ 5,  -15,   10,  -60,    0,    10,   -12,  60],
 				   [ 20,  -10,   5,  -60,    -15,    7,   5,  60],
+
+
 		]
 
 	
 		for i in range(len(keysets)):
 			print(keysets[i])
-			move_servos(keysets[i], .1, fp, start_time)
+			move_servos(keysets[i], .11, fp, start_time)
 			# time.sleep(1)
-			time.sleep(.1)
+			time.sleep(.2)
 			# if i%2==0:
 			# 	pixels.fill((100, 0, 00))
 			# else:
 			# 	pixels.fill((00, 0, 100))
+		time.sleep(.2)
 
 
-		move_servos([ 0, 0, 0,  -60, 0, 0,  0,  60], .125)
+	move_servos([ 0, 0, 0,  -60, 0, 0,  0,  60], .15)
 
 	home_all(.1, fp, start_time)
 
 		
 	# close file
 	fp.close()
+
+def side_walk(speed=None):
+
+	pixels.fill((30, 0, 30))
+	tilt_back_key =  [-5.1108220405366245, 0,1 , -60, 7.58479210453854,0 ,2 , 60]
+	move_servos(tilt_back_key, .1)
+	time.sleep(.1)
+	pixels.fill((00, 30, 20))
+	t = 3.4
+	start_time = time.time()
+
+	# og side walk shuffle
+	# speed_t = .008
+	# while True :
+	# 	servo11.moveTimeWrite(offsets[11]+sin(t)*10)
+	# 	servo21.moveTimeWrite(offsets[21]-sin(t-.04)*20)
+
+
+	# 	if time.time()-start_time > 15:
+	# 		break
+	# 	t += speed_t
+
+
+	speed_t = .006
+	while True :
+		servo11.moveTimeWrite(offsets[11]+3+sin(t+.65)*20)
+		servo21.moveTimeWrite(offsets[21]+6-sin(t-.22)*28)
+
+		if time.time()-start_time > 25:
+			break
+		t += speed_t
+	
+	home_all(.1)
+
+
 
 def dance_step_1(speed_t=.009):
 
@@ -229,6 +282,7 @@ def dance_step_1(speed_t=.009):
 
 def dance_step_2():
 
+	# side shuffle
 	pixels.fill((00, 30, 20))
 	t = 0
 	start_time = time.time()
@@ -365,13 +419,11 @@ def dance_step_bow(speed_t=.008):
 	start_time = time.time()
 	
 	keysets = [
-
 				[ 0, -20, 9, 60, 0, -20, 9, -60],
 				[ 0, -40, 20, 60, 0, -40, 20, -60],
 				[ 0, -30, 20, 60, 0, -30, 20, -60], 
 				[ 0, -25, 15, 60, 0, -25, 15, -60], 
 				[ 0, -15, 15, 60, 0, -15, 15, -60], 
-
 	]
 
 	for i in range(len(keysets)):
@@ -401,8 +453,8 @@ def dance(rythm=1, speed_t=0.01):
 		dance_step_5()
 		dance_step_6()
 		
-	time.sleep(.1)
-	dance_step_bow()
+	# time.sleep(.1)
+	# dance_step_bow()s
 
 
 def flap(speed_t):
@@ -488,6 +540,8 @@ def main():
 
 	parser.add_argument('--home', action="store_true", help="Home everything to upright pos")
 	parser.add_argument('--walk', action="store_true", help="Walk (default forward)")
+	parser.add_argument('--s_walk', action="store_true", help="Walk sidways")
+
 	parser.add_argument('--dance', action="store_true", help="Dance (default move 1)")
 
 	parser.add_argument('--flap', action="store_true", help="Flap Arms in sync")
@@ -507,6 +561,8 @@ def main():
 		home_all(.2)
 	elif args.walk:
 		walk(.1)
+	elif args.s_walk:
+		side_walk(.1)
 	elif args.dance:
 		dance()
 	elif args.flap:
